@@ -34,7 +34,7 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
           name: java-app
-          path: '${{ github.workspace }}/build/libs/*.jar'
+          path: 'CICDSpring/build/libs/*.jar'
 
   deploy:
     runs-on: ubuntu-latest
@@ -56,4 +56,4 @@ jobs:
           app-name: 'cicdspringtest'
           slot-name: 'production'
           publish-profile: ${{ secrets.AzureAppService_PublishProfile_3148b3cf1d5a45afbdd9f03ef87f9d33 }}
-          package: '${{ github.workspace }}/build/libs/*.jar'
+          package: 'CICDSpring/build/libs/*.jar'

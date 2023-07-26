@@ -1,5 +1,5 @@
 package com.example.SpringSecurity.enums;
 
 public enum UserRoleType {
-    USER,ADMIN,MANAGER,es
+    USER,ADMIN,MANAGER,esa
 }

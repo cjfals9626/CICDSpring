@@ -35,6 +35,9 @@ jobs:
         with:
           name: java-app
           path: '${{ github.workspace }}/build/libs/*.jar'
+          
+      - name: Check if java-app.zip exists
+        run: ls '${{ github.workspace }}/build/libs/java-app.zip'
 
   deploy:
     runs-on: ubuntu-latest
@@ -50,10 +53,10 @@ jobs:
           name: java-app
           
       - name: Check if java-app.zip exists
-        run: ls '${{ github.workspace }}/java-app.zip'
+        run: ls '${{ github.workspace }}/build/libs/java-app.zip'
 
       - name: Unzip the artifact
-        run: unzip -o -q '${{ github.workspace }}/java-app.zip' -d '${{ github.workspace }}/java-app'
+        run: unzip -o -q '${{ github.workspace }}/build/libs/java-app.zip' -d '${{ github.workspace }}/java-app'
 
       - name: Deploy to Azure Web App
         id: deploy-to-webapp

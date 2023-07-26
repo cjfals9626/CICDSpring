@@ -12,6 +12,6 @@ public class UserController {
 
     @GetMapping("/home")
     public String home(){
-        return "<h1>home</h1>";
+        return "<h1>homea</h1>";
     }
 }

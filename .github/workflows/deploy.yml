@@ -65,4 +65,4 @@ jobs:
           app-name: 'cicdspringtest'
           slot-name: 'production'
           publish-profile: ${{ secrets.AzureAppService_PublishProfile_3148b3cf1d5a45afbdd9f03ef87f9d33 }}
-          package: '${{ github.workspace }}/java-app/build/libs/*.jar'
+          package: '${{ github.workspace }}/java-app/*.jar'

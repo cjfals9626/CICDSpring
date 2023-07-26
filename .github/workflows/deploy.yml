@@ -34,13 +34,13 @@ jobs:
         run: mkdir -p ${{ github.workspace }}/artifacts
 
       - name: Copy JAR files to artifact directory
-        run: mv ${{ github.workspace }}/build/libs/*.jar ${{ github.workspace }}/artifacts/
+        run: cp -r ${{ github.workspace }}/build/libs/*.jar ${{ github.workspace }}/artifacts/
 
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v2
         with:
           name: java-app
-          path: '${{ github.workspace }}/artifacts/*.jar' 
+          path: '${{ github.workspace }}/artifacts/' 
 
   deploy:
     runs-on: ubuntu-latest
@@ -55,6 +55,11 @@ jobs:
         with:
           name: java-app
 
+      - name: Select the latest JAR file
+        run: |
+          LATEST_JAR=$(ls -t ${{ github.workspace }}/java-app/*.jar | head -n 1)
+          echo "::set-output name=latest_jar::${LATEST_JAR}"
+
       - name: Deploy to Azure Web App
         id: deploy-to-webapp
         uses: azure/webapps-deploy@v2
@@ -62,4 +67,4 @@ jobs:
           app-name: 'cicdspringtest'
           slot-name: 'production'
           publish-profile: ${{ secrets.AzureAppService_PublishProfile_3148b3cf1d5a45afbdd9f03ef87f9d33 }}
-          package: '*.jar'
+          package: ${{ needs.build.outputs.latest_jar }}

@@ -53,7 +53,7 @@ jobs:
           name: java-app
           
       - name: Check if java-app.zip exists
-        run: ls '${{ github.workspace }}/build/libs'
+        run: ls '${{ github.workspace }}'
         
       - name: Check if java-app.jar
         run: ls '${{ github.workspace }}/java-app'

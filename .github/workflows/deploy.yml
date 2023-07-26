@@ -36,6 +36,9 @@ jobs:
           name: java-app
           path: '${{ github.workspace }}/build/libs/*.jar'
 
+      - name: Check uploaded JAR files
+        run: ls -R '${{ github.workspace }}/build/libs/'
+
   deploy:
     runs-on: ubuntu-latest
     needs: build

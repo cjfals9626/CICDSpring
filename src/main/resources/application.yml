@@ -1,0 +1,24 @@
+logging:
+  file:
+    name: ${log_dir}/log/test.log
+  level:
+    com.example.SpringSecurity : error
+    com.example.SpringSecurity.controller : debug
+  logback:
+    rolling policy:
+      max-history: 7
+      max-file-size: 10MB
+
+spring:
+  datasource:
+    url: ${db_url}
+    username: ${db_username}
+    password: ${db_password}
+    driver-class-name: org.h2.Driver
+  jpa:
+    hibernate:
+      ddl-auto: create
+  mvc:
+    hiddenmethod:
+      filter:
+        enabled: true

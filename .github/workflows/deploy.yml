@@ -37,7 +37,7 @@ jobs:
           path: '${{ github.workspace }}/build/libs/*.jar'
           
       - name: Check if java-app.zip exists
-        run: ls '${{ github.workspace }}/build/libs/*'
+        run: ls '${{ github.workspace }}/build/libs'
 
   deploy:
     runs-on: ubuntu-latest
@@ -53,10 +53,10 @@ jobs:
           name: java-app
           
       - name: Check if java-app.zip exists
-        run: ls '${{ github.workspace }}/build/libs/*'
+        run: ls '${{ github.workspace }}/build/libs'
         
       - name: Check if java-app.jar
-        run: ls '${{ github.workspace }}/java-app/*'
+        run: ls '${{ github.workspace }}/java-app'
           
       - name: Deploy to Azure Web App
         id: deploy-to-webapp

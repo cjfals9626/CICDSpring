@@ -1,24 +1,25 @@
-name: AzureSpringApps
-on: push
-env:
-  ASC_PACKAGE_PATH: ${{ github.workspace }}
-  AZURE_SUBSCRIPTION: 1961b3ff-9153-49aa-9cf4-aad34a63b586
+name: Build and deploy JAR app to Azure Web App - cicdspringtest
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
 
 jobs:
-  deploy_to_production:
+  build:
     runs-on: ubuntu-latest
-    name: deploy to production with artifact
-    steps:
-      - name: Print GitHub Workspace Path
-        run: echo "ASC_PACKAGE_PATH=${{ github.workspace }}" 
 
-      - name: List contents of workspace
-        run: ls ${{ github.workspace }}
-        
-      - name: Checkout GitHub Action
+    steps:
+      - name: Checkout code
         uses: actions/checkout@v2
 
-      - name: Set up Java 17
+      - name: Azure Login
+        uses: azure/login@v1
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }} 
+
+      - name: Set up Java version
         uses: actions/setup-java@v1
         with:
           java-version: '17'
@@ -26,20 +27,39 @@ jobs:
       - name: Grant execute permission for Gradle wrapper
         run: chmod +x ./gradlew
 
-      - name: Gradle build, clean
+      - name: Build with Gradle
         run: ./gradlew clean build
 
-      - name: Login via Azure CLI
-        uses: azure/login@v1
+      - name: Upload artifact for deployment job
+        uses: actions/upload-artifact@v2
         with:
-          creds: ${{ secrets.AZURE_CREDENTIALS }}
+          name: java-app
+          path: '${{ github.workspace }}/build/libs/*.jar'
+          
+      - name: Check if java-app.zip exists
+        run: ls '${{ github.workspace }}/build/libs'
 
-      - name: deploy to production with artifact
-        uses: azure/spring-apps-deploy@v1
+  deploy:
+    runs-on: ubuntu-latest
+    needs: build
+    environment:
+      name: 'production'
+      url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
+    
+    steps:
+      - name: Download artifact from build job
+        uses: actions/download-artifact@v2
         with:
-          azure-subscription: ${{ env.AZURE_SUBSCRIPTION }}
-          action: Deploy
-          service-name: cicdspringtest
-          app-name: cicdspringtest
-          use-staging-deployment: false
-          package: ${{ env.ASC_PACKAGE_PATH }}/build/libs/SpringSecurity-0.0.1-SNAPSHOT.jar
+          name: java-app
+          
+      - name: Check if java-app.zip exists
+        run: ls '${{ github.workspace }}'
+          
+      - name: Deploy to Azure Web App
+        id: deploy-to-webapp
+        uses: azure/webapps-deploy@v2
+        with:
+          app-name: 'cicdspringtest'
+          slot-name: 'production'
+          publish-profile: ${{ secrets.AzureAppService_PublishProfile_3148b3cf1d5a45afbdd9f03ef87f9d33 }}
+          package: '${{ github.workspace }}/SpringSecurity-0.0.1-SNAPSHOT.jar'

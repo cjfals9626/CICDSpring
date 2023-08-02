@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class UserController {
     private final UserService userService;
 
-    @GetMapping("/home")
+    @GetMapping("/")
     public String home(){
         return "<h1>homeaaa</h1>";
     }

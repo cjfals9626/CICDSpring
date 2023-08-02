@@ -36,4 +36,4 @@ jobs:
           service-name: cicdspringtest
           app-name: cicdspringtest
           use-staging-deployment: false
-          package: ${{ env.ASC_PACKAGE_PATH }}/build/libs/*.jar
+          package: ${{ env.ASC_PACKAGE_PATH }}/build/libs/SpringSecurity-0.0.1-SNAPSHOT.jar

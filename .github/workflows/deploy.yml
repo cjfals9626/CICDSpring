@@ -10,7 +10,7 @@ jobs:
     name: deploy to production with artifact
     steps:
       - name: Print GitHub Workspace Path
-        run: echo "GitHub Workspace Path: ${{ github.workspace }}"
+        run: echo "ASC_PACKAGE_PATH=${{ github.workspace }}" 
         
       - name: Checkout GitHub Action
         uses: actions/checkout@v2

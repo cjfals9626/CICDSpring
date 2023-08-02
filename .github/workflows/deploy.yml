@@ -11,6 +11,9 @@ jobs:
     steps:
       - name: Print GitHub Workspace Path
         run: echo "ASC_PACKAGE_PATH=${{ github.workspace }}" 
+
+      - name: List contents of workspace
+        run: ls ${{ github.workspace }}
         
       - name: Checkout GitHub Action
         uses: actions/checkout@v2
